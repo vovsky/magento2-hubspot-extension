@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Webapi\Controller\PathProcessor">
+        <plugin name="pathModifier" type="Groove\Hubshoply\Plugin\Webapi\Controller\PathProcessor"/>
+    </type>
+    <type name="Magento\Framework\Oauth\Helper\Request">
+        <plugin name="urlModifier" type="Groove\Hubshoply\Plugin\Webapi\Oauth\Helper\Request" disabled="true"/>
+    </type>
+    <type name="Magento\Framework\Webapi\Rest\Request">
+        <plugin name="webapiContorllerRestHubshopLy" type="Groove\Hubshoply\Plugin\Webapi\Rest\Request" />
+    </type>
+    <type name="Magento\Framework\Webapi\Rest\Response">
+        <plugin name="productDataResponse" type="Groove\Hubshoply\Plugin\Webapi\Rest\Response" />
+    </type>
+    <type name="Groove\Hubshoply\Plugin\Webapi\Rest\Response">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="product" xsi:type="object">Groove\Hubshoply\Model\RestOutput\Product</item>
+                <item name="order" xsi:type="object">Groove\Hubshoply\Model\RestOutput\Order</item>
+                <item name="image" xsi:type="object">Groove\Hubshoply\Model\RestOutput\Image</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

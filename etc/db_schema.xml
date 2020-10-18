@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="hubshoply_token" resource="default" comment="Queue token">
+        <column xsi:type="int" name="token_id"  identity="true" comment="Auto Increment" />
+        <column xsi:type="int" name="consumer_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Consumer Id" />
+        <column xsi:type="varchar" name="token" length="127" nullable="false" comment="oken" />
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" nullable="false" comment="Created at" />
+        <column xsi:type="timestamp" name="expires"  nullable="false" comment="Expires" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="token_id" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="HUBSHOPLY_TOKEN_CONSUMER_ID_OAUTH_CONSUMER_ENTITY_ID"
+                    table="hubshoply_token" column="consumer_id" referenceTable="oauth_consumer"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="hubshoply_queue_item" resource="default" comment="Queue item">
+        <column xsi:type="int" name="item_id"  identity="true" comment="Auto Increment" />
+        <column xsi:type="varchar" name="event_type" length="127" nullable="false" comment="Event Type" />
+        <column xsi:type="varchar" name="event_entity" length="127" nullable="false" comment="Event Entity" />
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" nullable="false" comment="Created at" />
+        <column xsi:type="varchar" name="payload"  nullable="false" comment="Event JSON Payload	" />
+        <column xsi:type="smallint" name="store_id" comment="Store id" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="item_id" />
+        </constraint>
+        <index referenceId="HUBSHOPLY_QUEUE_ITEM_EVENT_TYPE" indexType="btree">
+            <column name="event_type"/>
+        </index>
+        <index referenceId="HUBSHOPLY_QUEUE_ITEM_EVENT_ENTITY" indexType="btree">
+            <column name="event_entity"/>
+        </index>
+        <index referenceId="HUBSHOPLY_QUEUE_ITEM_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="hubshoply_log" resource="default" comment="Log table">
+        <column xsi:type="int" name="log_id"  identity="true" comment="Auto Increment" />
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Store ID"/>
+        <column xsi:type="smallint" name="level" nullable="false"  comment="Message level" />
+        <column xsi:type="text" name="message" nullable="false" comment="Message" />
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" nullable="false" comment="Created at" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id" />
+        </constraint>
+        <index referenceId="HUBSHOPLY_LOG_STORE_ID_LEVEL" indexType="btree">
+            <column name="store_id"/>
+            <column name="level"/>
+        </index>
+    </table>
+    <table name="hubshoply_abandonedcart" resource="default" comment="Abandoned cart">
+        <column xsi:type="int" name="cart_id"  identity="true" comment="Auto Increment" />
+        <column xsi:type="int" name="quote_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Quote ID"/>
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" nullable="false" comment="Created at" />
+        <column xsi:type="timestamp" name="updated_at"  nullable="false" comment="Updated at" />
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Store ID"/>
+        <column xsi:type="boolean" name="enqueued" nullable="false" default="false" comment="Pushed to Queue"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="cart_id" />
+        </constraint>
+        <index referenceId="HUBSHOPLY_ABANDONEDCART_STORE_ID_QUOTE_ID" indexType="btree">
+            <column name="store_id"/>
+            <column name="quote_id"/>
+        </index>
+        <constraint xsi:type="foreign" referenceId="HUBSHOPLY_ABANDONEDCART_QUOTE_ID_QUOTE_ENTITY_ID"
+                    table="hubshoply_abandonedcart" column="quote_id" referenceTable="quote"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="HUBSHOPLY_ABANDONEDCART_STORE_ID_STORE_STORE_ID"
+                    table="hubshoply_abandonedcart" column="store_id" referenceTable="store"
+                    referenceColumn="store_id" onDelete="CASCADE"/>
+    </table>
+</schema>

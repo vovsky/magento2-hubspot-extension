@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_register_success">
+        <observer name="hubshoply_create_contact" instance="Groove\Hubshoply\Observer\Customer\CreateContact"/>
+    </event>
+    <event name="newsletter_subscriber_save_commit_after">
+        <observer name="hubshoply_create_newsletter_subscriber" instance="Groove\Hubshoply\Observer\QueueNewsLetterSubscriberObserver" />
+    </event>
+</config>

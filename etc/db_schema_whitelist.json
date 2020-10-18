@@ -1,0 +1,66 @@
+{
+    "hubshoply_token": {
+        "column": {
+            "token_id": true,
+            "consumer_id": true,
+            "token": true,
+            "created_at": true,
+            "expires": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "HUBSHOPLY_TOKEN_CONSUMER_ID_OAUTH_CONSUMER_ENTITY_ID": true
+        }
+    },
+    "hubshoply_queue_item": {
+        "column": {
+            "item_id": true,
+            "event_type": true,
+            "event_entity": true,
+            "created_at": true,
+            "payload": true,
+            "store_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "HUBSHOPLY_QUEUE_ITEM_EVENT_TYPE": true,
+            "HUBSHOPLY_QUEUE_ITEM_EVENT_ENTITY": true,
+            "HUBSHOPLY_QUEUE_ITEM_CREATED_AT": true
+        }
+    },
+    "hubshoply_log": {
+        "column": {
+            "log_id": true,
+            "store_id": true,
+            "level": true,
+            "message": true,
+            "created_at": true
+        },
+        "index": {
+            "HUBSHOPLY_LOG_STORE_ID_LEVEL": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "hubshoply_abandonedcart": {
+        "column": {
+            "cart_id": true,
+            "quote_id": true,
+            "created_at": true,
+            "updated_at": true,
+            "store_id": true,
+            "enqueued": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "HUBSHOPLY_ABANDONEDCART_QUOTE_ID_QUOTE_ENTITY_ID": true,
+            "HUBSHOPLY_ABANDONEDCART_STORE_ID_STORE_STORE_ID": true
+        },
+        "index": {
+            "HUBSHOPLY_ABANDONEDCART_STORE_ID_QUOTE_ID": true
+        }
+    }
+}

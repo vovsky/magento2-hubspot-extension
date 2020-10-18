@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="hubshoply_abandon_cart_scan" instance="Groove\Hubshoply\Cron\AbandonCartScan" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="hubshoply_clean_log" instance="Groove\Hubshoply\Cron\CleanLog" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+        <job name="hubshoply_token_expire" instance="Groove\Hubshoply\Cron\PruneTokes" method="execute">
+            <schedule>*/30 * * * *</schedule>
+        </job>
+        <job name="hubshoply_queue_expire" instance="Groove\Hubshoply\Cron\PruneQueueItems" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

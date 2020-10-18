@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Groove\Hubshoply\Model\Diagnostic\DiagnosticResultInterface" type="Groove\Hubshoply\Model\Diagnostic\DiagnosticResult"/>
+    <preference for="Groove\Hubshoply\Api\Data\TokenInterface" type="Groove\Hubshoply\Model\Token"/>
+    <virtualType name="Groove\Hubshoply\Model\Logger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">HubshoplyLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Groove\Hubshoply\Model\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Groove\Hubshoply\Model\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">var/log/hubshoply.log</argument>
+        </arguments>
+    </virtualType>
+    <type name="Groove\Hubshoply\Model\LoggerDbDecorator">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Model\Setup">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Controller\Queue\Authenticate">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="\Groove\Hubshoply\MessageQueue\Consumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="\Groove\Hubshoply\Observer\BaseObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Controller\Queue\AbstractQueue">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Model\Diagnostic\DiagnosticPool">
+        <arguments>
+            <argument name="tests" xsi:type="array">
+                <item name="consumer" xsi:type="object">Groove\Hubshoply\Model\Diagnostic\Consumer</item>
+                <item name="customer_tracking" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\CustomerTracking</item>
+                <item name="enabled" xsi:type="object" >\Groove\Hubshoply\Model\Diagnostic\Enabled</item>
+                <item name="log" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\Log</item>
+                <item name="mode" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\Mode</item>
+                <item name="queue" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\Queue</item>
+                <item name="role" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\Role</item>
+                <item name="site_id" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\SiteId</item>
+                <item name="user_config" xsi:type="object">\Groove\Hubshoply\Model\Diagnostic\Userconfig</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\App\AreaList">
+        <plugin name="areaModifier" type="Groove\Hubshoply\Plugin\App\AreaList"/>
+    </type>
+    <type name="Groove\Hubshoply\Model\Config">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Controller\Cart\Restore">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Cron\PruneTokes">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Cron\PruneQueueItems">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <type name="Groove\Hubshoply\Cron\AbandonCartScan">
+        <arguments>
+            <argument name="logger" xsi:type="object">Groove\Hubshoply\Model\LoggerDbDecorator</argument>
+        </arguments>
+    </type>
+    <preference for="Groove\Hubshoply\Api\ProductAttributeMediaGalleryManagementInterface" type="Groove\Hubshoply\Model\ProductAttributeMediaGalleryManagement" />
+</config>

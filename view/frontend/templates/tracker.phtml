@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var $viewModel Tracker
+ */
+
+use Groove\Hubshoply\Plugin\CustomerData;
+use Groove\Hubshoply\ViewModel\Tracker;
+
+$viewModel = $block->getViewModel();
+?>
+<?php if ($viewModel->isEnabled()) : ?>
+    <script type="text/javascript" id="hubshoply-tracker" src="<?php echo $viewModel->getScriptUrl(); ?>"></script>
+    <script type="text/javascript" id="hubshoply-init">
+        window.Hubshoply = <?php echo $viewModel->getConfigJson(); ?>;
+    </script>
+    <?php if ($viewModel->isLoggedIn() && $viewModel->canTrackCustomer()) : ?>
+        <script type="text/javascript" id="hubshoply-customer-tracking">
+            require([
+                'Magento_Customer/js/customer-data'
+            ], function(customerData){
+                let customer = customerData.get('customer');
+                const emailIndex = '<?= $block->escapeHtml(CustomerData::EMAIL_INDEX); ?>';
+                customer.subscribe(function (customer) {
+                    if (customer[emailIndex]) {
+                        window.Hubshoply[emailIndex] = customer[emailIndex];
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
