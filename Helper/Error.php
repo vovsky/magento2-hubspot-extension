@@ -24,7 +24,7 @@ class Error
         $this->json = $json;
     }
 
-    public function prepareResponse($code = null, $message = '', $details = '', $callback = nul)
+    public function prepareResponse($code = null, $message = '', $details = '', $callback = null)
     {
         if ((int)$code < 100) {
             $code = 500;
