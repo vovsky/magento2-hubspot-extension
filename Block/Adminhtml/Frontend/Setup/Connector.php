@@ -45,6 +45,16 @@ class Connector extends Template implements RendererInterface
      */
     private $oauthHelper;
 
+    /**
+     * Connector constructor.
+     *
+     * @param Context      $context
+     * @param Diagnostic   $diagnostic
+     * @param Config       $config
+     * @param UrlInterface $url
+     * @param Oauth        $oauthHelper
+     * @param array        $data
+     */
     public function __construct(
         Context $context,
         Diagnostic $diagnostic,
@@ -79,7 +89,9 @@ class Connector extends Template implements RendererInterface
      */
     private function getStoreId()
     {
-        return $this->storeManager->getStore($this->_request->getParam('store'))->getId();
+        $storeId = $this->_request->getParam('store');
+
+        return $storeId ?  $this->storeManager->getStore($storeId)->getId() : $storeId;
     }
 
     /**
